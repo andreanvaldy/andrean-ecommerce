@@ -1,0 +1,529 @@
+/* Reset margin, padding, dan box-sizing untuk semua elemen */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f3f4f6;
+  margin: 0;
+  padding: 0;
+}
+
+/* Container untuk halaman lebih lebar */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  gap: 20px;
+}
+
+/* Header */
+header {
+  background-color: #f97316;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+  color: #ffffff;
+  font-size: 1.8rem;
+  margin: 0;
+}
+
+header a {
+  color: #ffffff;
+  text-decoration: none;
+  margin: 0 15px;
+  font-size: 1.2rem;
+  transition: color 0.3s;
+}
+
+header a:hover {
+  color: #e5e7eb;
+}
+
+/* Sidebar */
+aside {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+aside h2 {
+  font-size: 1.3rem;
+  margin-bottom: 20px;
+  color: #374151;
+}
+
+aside ul {
+  list-style: none;
+  padding: 0;
+}
+
+aside li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  color: #6b7280;
+  cursor: pointer;
+}
+
+aside li i {
+  margin-right: 10px;
+}
+
+aside li:hover {
+  color: #f97316;
+}
+
+/* Main Banner */
+.main-banner {
+  background-color: #ffffff;
+  padding: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.main-banner img {
+  max-width: 50%;
+  border-radius: 8px;
+}
+
+.main-banner h2 {
+  color: #f97316;
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.main-banner h1 {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  color: #111827;
+}
+
+.main-banner p {
+  font-size: 1rem;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+.main-banner a {
+  display: inline-block;
+  margin-top: 20px;
+  color: #f97316;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.main-banner a:hover {
+  color: #d97706;
+}
+
+/* Small Banners */
+.small-banners {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  gap: 20px;
+}
+
+.small-banners img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.small-banners a {
+  display: block;
+  text-align: center;
+  margin-top: 10px;
+  color: #f97316;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.small-banners a:hover {
+  color: #d97706;
+}
+
+/* Shop Container */
+.shop-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+h1,
+h2 {
+  text-align: center;
+  color: #111827;
+}
+
+/* Produk List */
+.product-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Featured & All Products */
+.featured-products,
+.all-products {
+  margin: 20px 0;
+}
+
+.featured-grid,
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+/* Product Card */
+.product-card {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.product-image {
+  max-width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.product-card h2 {
+  font-size: 1.2rem;
+  margin: 10px 0;
+}
+
+.product-card p {
+  font-size: 1rem;
+  color: #374151;
+  margin-bottom: 15px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 10px 15px;
+  margin: 10px 0;
+  background: #007bff;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.btn:hover {
+  background: #0056b3;
+}
+
+/* Cart Button */
+.cart-button-container {
+  text-align: right;
+  margin: 20px;
+}
+
+.cart-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.cart-button:hover {
+  background-color: #45a049;
+}
+
+/* Add to Cart Button */
+.add-to-cart-btn {
+  padding: 10px 16px;
+  margin-top: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.add-to-cart-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Cart Icon */
+.cart-icon {
+  width: 30px;
+  height: 30px;
+}
+
+/* Responsive Design for Smaller Screens */
+@media (max-width: 768px) {
+  /* Untuk Grid Produk */
+  .featured-grid,
+  .product-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Untuk Main Banner */
+  .main-banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .main-banner img {
+    max-width: 100%;
+  }
+
+  .small-banners {
+    flex-direction: column;
+  }
+
+  /* Produk List menjadi satu kolom pada layar kecil */
+  .product-list {
+    flex-direction: column;
+  }
+
+  /* Tombol Checkout menjadi lebar penuh */
+  .checkout-btn {
+    width: 100%;
+  }
+}
+
+.styled-button {
+  padding: 10px 15px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+
+.add-to-cart-btn {
+  background-color: #28a745;
+  color: white;
+}
+
+.buy-now-btn {
+  background-color: #ffc107; /* Kuning */
+  color: white;
+}
+
+.styled-button:hover {
+  opacity: 0.8;
+}
+
+.order-card {
+  border: 1px solid #ddd;
+  padding: 16px;
+  border-radius: 8px;
+  background: #fff;
+  margin-bottom: 20px; /* Jarak antar order */
+}
+
+.order-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px; /* Jarak bawah */
+}
+
+.order-date,
+.order-total,
+.order-status {
+  font-size: 16px;
+  margin-bottom: 8px; /* Jarak antar elemen */
+}
+
+.order-status strong {
+  color: #ff5722; /* Warna untuk status */
+}
+
+.order-items {
+  list-style: none;
+  padding: 0;
+}
+
+.order-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px; /* Jarak antar produk */
+}
+
+.order-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 12px;
+}
+
+.order-details {
+  flex: 1;
+}
+
+.order-name {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.order-price {
+  font-size: 14px;
+  color: #333;
+}
+
+.order-quantity {
+  font-size: 14px;
+  color: #555;
+}
+
+.delete-order-btn {
+  background: red;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px; /* Jarak tombol hapus ke bawah */
+}
+
+.delete-order-btn:hover {
+  background: darkred;
+}
+
+.product-card .buy-now-btn {
+  margin-top: 10px; /* Jarak antara tombol Add to Cart dan Beli */
+}
+
+.shop-container {
+  padding: 20px; /* Padding untuk seluruh kontainer */
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.search-container {
+  margin-bottom: 20px; /* Menambahkan jarak bawah untuk form pencarian */
+  padding: 0 10px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px; /* Menambahkan jarak bawah pada input */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.product-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Menambahkan jarak antar item produk */
+  justify-content: space-between;
+  padding: 0 20px; /* Padding horizontal agar tidak mepet dengan tepi */
+  box-sizing: border-box; /* Agar padding tidak mempengaruhi lebar total */
+}
+
+.product-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.product-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: calc(33% - 20px); /* Membuat 3 kolom dengan jarak antar produk */
+  padding: 20px; /* Padding dalam produk card */
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.product-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.product-card h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  font-size: 18px;
+  margin: 10px 0;
+  flex-grow: 1; /* Isi ruang kosong di antara elemen */
+}
+
+.product-card p {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.add-to-cart-btn, .buy-now-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 10px; /* Memberikan jarak antar tombol */
+  cursor: pointer;
+  width: 100%; /* Membuat tombol lebar penuh */
+}
+
+.add-to-cart-btn {
+  margin-top: auto; /* Dorong tombol ke bawah */
+  width: 100%; /* Buat tombol penuh dalam baris */
+  padding: 10px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  background-color: #28a745;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.buy-now-btn {
+  background-color: #FF9800; /* Warna oranye untuk Buy Now */
+  color: white;
+}
+
+.checkout-container {
+  margin-top: 30px;
+  text-align: center;
+  padding: 0 10px;
+}
+
+.checkout-btn {
+  padding: 15px 30px;
+  background-color: #2196F3; /* Warna biru untuk Checkout */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.checkout-btn:hover {
+  background-color: #1976D2;
+}
+
+
+
