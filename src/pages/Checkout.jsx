@@ -1,89 +1,41 @@
-import { useContext, useState } from "react";
-import { CartContext } from "../context/CartContext";
-import { useNavigate, useLocation, Link } from "react-router-dom";
-import axios from "axios";
-
-
+import { useContext, useState } from "react"; //useContext → Menggunakan data dari CartContext untuk mengambil isi keranjang belanja
+// useState → Mengelola state dalam komponen untuk menyimpan data checkout..
+import { CartContext } from "../context/CartContext"; //Context yang menyimpan daftar produk dalam keranjang (cart).
+import { useNavigate, useLocation, Link } from "react-router-dom"; //useNavigate → Untuk mengarahkan pengguna ke halaman lain setelah checkout
+// useLocation → Untuk mendapatkan data yang dikirim dari halaman sebelumnya.
+// Link → Untuk navigasi antar halaman tanpa reload..
+import axios from "axios"; //Untuk mengirim data pesanan (order) ke backend melalui API.
 
 function Checkout() {
-  const { cart, totalAmount, clearCart } = useContext(CartContext);
-  const navigate = useNavigate();
-  const location = useLocation();
-  
-  
-  
-  const product = location.state?.product; // Ambil produk dari state
-  const selectedProduct = location.state?.product;
+  const { cart, clearCart } = useContext(CartContext); //cart → Daftar produk dalam keranjang belanja
+  // clearCart → Fungsi untuk mengosongkan keranjang setelah checkout..
+  const navigate = useNavigate(); //Untuk berpindah halaman setelah checkout.
+  const location = useLocation(); //Untuk menangkap data produk yang dikirim dari halaman sebelumnya.
 
-  const itemsToCheckout = selectedProduct ? [{ ...selectedProduct, quantity: 1 }] : cart;
-  const finalTotal = itemsToCheckout.reduce((sum, item) => sum + (Number(item.price) * (item.quantity || 1)), 0);
+  //. Menentukan Produk yang Akan di Checkout
+  const selectedProduct = location.state?.product; //Jika pengguna checkout langsung dari halaman produk, maka hanya satu produk yang diproses
+  const itemsToCheckout = selectedProduct
+    ? [{ ...selectedProduct, price: Number(selectedProduct.price), quantity: 1 }]
+    : cart.map(item => ({ ...item, price: Number(item.price), quantity: item.quantity || 1 }));
 
-  console.log("Produk dari state location:", selectedProduct); // Debug log
-  console.log("Items to checkout:", itemsToCheckout);
+    //Menghitung Total Harga
+  const subtotal = itemsToCheckout.reduce((sum, item) => sum + item.price * item.quantity, 0);//Menggunakan reduce() untuk menjumlahkan harga total semua produk di keranjang.
+  
+  //Menentukan Ongkos Kirim
+  const [shippingCost, setShippingCost] = useState(10000); //shippingCost (default 10000) sebagai biaya pengiriman awal.
+  const totalWithShipping = subtotal + shippingCost; //totalWithShipping menghitung total pesanan termasuk ongkos kirim.
 
+  const shippingOptions = [
+    { id: "standard", name: "Standard (Rp10.000)", cost: 10000 },
+    { id: "express", name: "Express (Rp25.000)", cost: 25000 },
+  ];
 
-  const handlePlaceOrder = async () => {
-    const newOrder = {
-      id: `ORD${Date.now()}`, // ID unik
-      date: new Date().toISOString(), // Tanggal
-      total: finalTotal, // Total harga
-      status: "Pending", // Status pesanan
-      items: itemsToCheckout, // Pastikan daftar item dikirim
-    };
-  
-    try {
-      // Kirim data order ke backend untuk disimpan di MongoDB
-      const response = await axios.post("http://localhost:3000/api/Orders", newOrder);
-      console.log("Order berhasil disimpan ke database:", response.data);
-  
-      // Mengarahkan ke halaman Orders dengan membawa data order
-      navigate("/orders", { state: { newOrder: response.data } });
-  
-      // Clear Cart setelah berhasil memesan
-      clearCart();
-    } catch (error) {
-      console.error("Gagal menyimpan order ke database:", error);
-    }
+  const handleShippingChange = (event) => {
+    const selectedOption = shippingOptions.find(opt => opt.id === event.target.value);
+    setShippingCost(selectedOption ? selectedOption.cost : 10000);
   };
-  
-  
-  // ✅ Pastikan productFromShop dideklarasikan dengan aman
-  const productFromShop = location.state?.product || null;
 
-  console.log("Product from Shop:", productFromShop); // Debugging
-
-  console.log("Product received in Checkout:", productFromShop); // Debugging
-console.log("Cart in Checkout:", cart); // Debugging
-  // ✅ Pastikan cart tidak kosong saat checkout
-  
-  const finalCart = productFromShop 
-  ? [{ ...productFromShop, quantity: productFromShop.quantity || 1 }] 
-  : Array.from(new Map(cart.map(item => [item.id, { ...item, quantity: item.quantity || 1 }])).values());
-
-// ✅ Pastikan setiap item memiliki quantity saat menghitung total
-
-
-console.log("Items to checkout:", itemsToCheckout); // Debug log
-  
-
-  const items = product ? [{ ...product, price: Number(product.price) }] : cart.map(item => ({ ...item, price: Number(item.price) }));
-
-  
-  console.log("Final Cart:", finalCart);
-  console.log("Total Amount:", totalAmount);
-
-  if (!productFromShop && cart.length === 0) {
-    return (
-      <h2>
-        Tidak ada produk untuk checkout. <Link to="/shop">Kembali ke toko</Link>
-      </h2>
-    );
-  }
-
-  
-
-  
-
+  //Mengelola Form Checkout
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -95,96 +47,96 @@ console.log("Items to checkout:", itemsToCheckout); // Debug log
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  //Mengirim Pesanan ke Backend
+  const handleSubmit = async (e) => { 
     e.preventDefault();
-    
-    if (!form.name || !form.email || !form.address) {
-      alert("Please fill in all required fields.");
+    console.log("Tombol Place Order diklik!"); 
+
+    if (!form.name.trim() || !form.email.trim() || !form.address.trim()) {
+      alert("Harap isi semua bidang yang diperlukan.");
       return;
     }
-          
+
     const newOrder = {
-      id: `ORD${Date.now()}`, // ID unik
-      date: new Date().toISOString().split("T")[0], // Tanggal hari ini
-      total: totalAmount, // Total harga
-      status: "Pending", // Status pesanan
-      items: finalCart, // Produk yang dipesan
-    };
-
-    const existingOrders = JSON.parse(localStorage.getItem("orders")) || [];
-const updatedOrders = [...existingOrders, newOrder];
-localStorage.setItem("orders", JSON.stringify(updatedOrders));
-
-    console.log("Navigating with newOrder:", newOrder);
-    alert(`Order placed successfully for ${form.name}!`);
-    // Pastikan clearCart() dipanggil hanya setelah order berhasil
-    clearCart();
-    navigate("/orders", { state: { newOrder } }); // Arahkan ke Orders dengan data pesanan
+      id: `ORD${Date.now()}`,
+      date: new Date().toISOString(),
+      total: totalWithShipping,
+      shippingCost: shippingCost,
+      address: form.address,
+      status: "Pending",
+      items: itemsToCheckout.map(item => ({
+          id: item.id,
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity,
+          image: item.image,
+      })),
+      customer: form.name,  // Mengirimkan nama sebagai customer
+      email: form.email,    // Mengirimkan email
   };
+  
+  console.log("data yang dikirim ke backend:", newOrder);
+    try {
+      const response = await axios.post("http://localhost:3000/api/orders", newOrder); //Menggunakan axios.post() untuk mengirim pesanan ke backend (http://localhost:3000/api/orders).
+      console.log("Order berhasil disimpan ke database:", response.data);
+      navigate("/orders", { state: { newOrder: response.data } });
+
+      if (clearCart) clearCart();
+    } catch (error) {
+      console.error("Gagal menyimpan order ke database:", error.response?.data || error.message);
+    }
+  };
+
+  //Menampilkan Pesan Jika Tidak Ada Produk
+  if (!selectedProduct && cart.length === 0) {
+    return (
+      <h2>
+        Tidak ada produk untuk checkout. <Link to="/shop">Kembali ke toko</Link>
+      </h2>
+    );
+  }
 
   
 
   return (
+    // Tampilan Form Checkout
     <div style={styles.container}>
       <h2>Checkout</h2>
       <form onSubmit={handleSubmit} style={styles.form}>
-        <label htmlFor="name">Name:</label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          value={form.name}
-          onChange={handleChange}
-          placeholder="Enter your full name"
-          required
-          style={styles.input}
-        />
+        <label htmlFor="name">Nama:</label>
+        <input type="text" id="name" name="name" value={form.name} onChange={handleChange} required style={styles.input} />
 
         <label htmlFor="email">Email:</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={form.email}
-          onChange={handleChange}
-          placeholder="Enter your email"
-          required
-          style={styles.input}
-        />
+        <input type="email" id="email" name="email" value={form.email} onChange={handleChange} required style={styles.input} />
 
-        <label htmlFor="address">Address:</label>
-        <textarea
-          id="address"
-          name="address"
-          value={form.address}
-          onChange={handleChange}
-          placeholder="Enter your address"
-          required
-          style={styles.textarea}
-        />
+        <label htmlFor="address">Alamat:</label>
+        <textarea id="address" name="address" value={form.address} onChange={handleChange} required style={styles.textarea} />
 
-        <label htmlFor="paymentMethod">Payment Method:</label>
-        <select
-          id="paymentMethod"
-          name="paymentMethod"
-          value={form.paymentMethod}
-          onChange={handleChange}
-          style={styles.select}
-        >
-          <option value="credit-card">Credit Card</option>
-          <option value="paypal">PayPal</option>
-          <option value="bank-transfer">Bank Transfer</option>
+        <label htmlFor="shipping">Metode Pengiriman:</label>
+        <select id="shipping" onChange={handleShippingChange} style={styles.select}>
+          {shippingOptions.map(option => (
+            <option key={option.id} value={option.id}>{option.name}</option>
+          ))}
         </select>
 
-        <h2>Total: Rp {totalAmount.toLocaleString()}</h2>
+        <label htmlFor="paymentMethod">Metode Pembayaran:</label>
+        <select id="paymentMethod" name="paymentMethod" value={form.paymentMethod} onChange={handleChange} style={styles.select}>
+          <option value="credit-card">Kartu Kredit</option>
+          <option value="paypal">PayPal</option>
+          <option value="bank-transfer">Transfer Bank</option>
+        </select>
+
+        <h3>Subtotal: Rp {subtotal.toLocaleString()}</h3>
+        <h3>Ongkos Kirim: Rp {shippingCost.toLocaleString()}</h3>
+        <h2>Total: Rp {totalWithShipping.toLocaleString()}</h2>
 
         <button type="submit" style={styles.button} aria-label="Place your order">
-          Place Order
+          Checkout
         </button>
       </form>
     </div>
   );
-};
+}
 
 const styles = {
   container: {
@@ -225,11 +177,9 @@ const styles = {
     cursor: "pointer",
     borderRadius: "5px",
     transition: "background-color 0.3s ease",
+    marginTop: "15px",  // Tambahkan margin atas biar gak nempel ke total harga
+    marginBottom: "30px",  // Tambahkan margin bawah biar ada jarak di bawah tombol
   },
-};
-
-styles.button[':hover'] = {
-  backgroundColor: "#218838",
 };
 
 export default Checkout;

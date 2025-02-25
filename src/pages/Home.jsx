@@ -1,7 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"; //Digunakan untuk navigasi tanpa reload halaman.
 import "@/styles/global.css";
 
+//struktur halaman
 const Home = () => {
   return (
     <div>
@@ -12,16 +13,19 @@ const Home = () => {
         <aside className="sidebar">
           <h2>Categories</h2>
           <ul>
-            {[ 
-              { icon: "fas fa-desktop", label: "Computer", path: "computer" }, 
-              { icon: "fas fa-mobile-alt", label: "Smartphone", path: "smartphone" }, 
-              { icon: "fas fa-headphones", label: "Accessories", path: "accessories" }
-            ].map((item, index) => (
-              <li key={index} className="sidebar-item">
-                <i className={item.icon}></i> 
-                <Link to={`/shop?category=${item.path}`} className="category-link">{item.label}</Link>
-              </li>
-            ))}
+          {[
+  { icon: "fas fa-desktop", label: "Computer", path: "computer" }, 
+  { icon: "fas fa-mobile-alt", label: "Smartphone", path: "smartphone" }, 
+  { icon: "fas fa-headphones", label: "Accessories", path: "accessories" }
+].map((item, index) => (
+  <li key={index} className="sidebar-item">
+    <i className={item.icon}></i> 
+    <Link to={`/shop?category=${item.path}`} className="category-link">
+      {item.label}
+    </Link>
+  </li>
+))}
+
           </ul>
         </aside>
 
@@ -73,4 +77,11 @@ const Home = () => {
   );
 };
 
+
 export default Home;
+
+
+// Kode ini membuat halaman Home untuk eCommerce dengan fitur: ✅ Sidebar kategori dengan ikon.
+// ✅ Banner utama produk unggulan.
+// ✅ Banner kecil untuk kategori tambahan.
+// ✅ Navigasi menggunakan query parameter ke halaman Shop.

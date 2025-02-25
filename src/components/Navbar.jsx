@@ -1,10 +1,10 @@
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; //Hook dari react-router-dom untuk melakukan navigasi antar halaman.
+import { Link } from "react-router-dom"; //Komponen bawaan dari react-router-dom untuk navigasi tanpa reload halaman.
 
 function Navbar() {
   const navigate = useNavigate();  // Hook untuk navigasi
   const handleSearch = (event) => {
-    event.preventDefault();
+    event.preventDefault(); //Mencegah form melakukan reload halaman setelah dikirim.
     const query = event.target.search.value;
     console.log("Pencarian:", query); // Ganti dengan logika pencarian
     
@@ -22,11 +22,13 @@ function Navbar() {
     event.target.reset(); // Reset input pencarian
   };
 
+  //logout lalu ke login
   const handleLogout = () => {
     localStorage.removeItem("authToken");
     navigate("/Login");
   };
 
+  //Mengecek Status Login
   const isLoggedIn = localStorage.getItem("authToken");
 
 

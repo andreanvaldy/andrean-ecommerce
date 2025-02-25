@@ -1,9 +1,15 @@
 import { Navigate } from "react-router-dom";
 
-function ProtectedRoute({ children }) {
-  const isAuthenticated = localStorage.getItem("isAuthenticated");
+const ProtectedRoute = ({ children }) => {
+  const isLoggedIn = localStorage.getItem("authToken"); // Cek apakah user sudah login
 
-  return isAuthenticated ? children : <Navigate to="/login" />;
-}
+  if (!isLoggedIn) {
+    return <Navigate to="/login" replace />; // Redirect ke Login jika belum login
+  }
+
+  return children; // Jika sudah login, izinkan akses halaman
+};
 
 export default ProtectedRoute;
+
+//ini untuk mengunci semua halaman sebelum login dulu

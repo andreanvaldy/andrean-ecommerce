@@ -9,6 +9,7 @@ import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import Orders from "./pages/Orders";
+import ProtectedRoute from "./components/ProtectedRoute"; // Import ProtectedRoute
 import "@/styles/global.css"; // Pastikan file ini ada di lokasi yang tepat
 
 
@@ -25,12 +26,17 @@ function App() {
           <Routes>
           <Route path="/register" element={<Register />} />
           <Route path="/Login" element={<Login />} />
-            <Route path="/Home" element={<Home />} />
-            <Route path="/shop" element={<Shop />} />
-            <Route path="/product/:id" element={<ProductDetail />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/checkout" element={<Checkout />} />
-            <Route path="/orders" element={<Orders />} />
+          <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+            <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+            <Route path="/shop" element={<ProtectedRoute><Shop /></ProtectedRoute>} />
+            <Route path="/product/:id" element={<ProtectedRoute><ProductDetail /></ProtectedRoute>} />
+            <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
+            <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
+            <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
+
+            {/* Lindungi halaman Checkout dan Orders */}
+  {/* <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
+  <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} /> */}
           </Routes>
         </div>
         <Footer /> {/* Footer muncul di semua halaman */}
@@ -40,3 +46,8 @@ function App() {
 }
 
 export default App;
+
+//App.jsx adalah pusat aplikasi React yang menangani routing, context provider, serta menampilkan Navbar dan Footer di setiap halaman.
+// Semua halaman diatur menggunakan Routes dan Route dari react-router-dom.
+// CartProvider digunakan agar state keranjang belanja bisa diakses di seluruh aplikasi.
+// Navigasi dilakukan dengan Router, dan halaman yang aktif ditampilkan di dalam Routes.
